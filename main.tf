@@ -4,21 +4,21 @@ variable "vcs_repo" {
 
 provider "aws" {
   region  = "us-west-2"
-  profile = "swinkler"
+  profile = "default"
 }
 
-module "s3backend" { #A
+module "s3backend" {
   source         = "terraform-in-action/s3backend/aws"
   principal_arns = [module.codepipeline.deployment_role_arn]
 }
 
-module "codepipeline" { #B
+module "codepipeline" {
   source   = "./modules/codepipeline"
-  name     = "terraform-in-action"
+  name     = "terraform-enterprise"
   vcs_repo = var.vcs_repo
-auto_apply = true
+  auto_apply = false
   environment = {
-    CONFIRM_DESTROY = 1
+    CONFIRM_DESTROY = 0
   }
 
   deployment_policy = file("./policies/policy.json") #C
@@ -28,6 +28,6 @@ auto_apply = true
 terraform {
   required_version = ">= 0.14"
   required_providers {
-    aws = "= 3.28"
+    aws = "~> 5.0"
   }
 }
