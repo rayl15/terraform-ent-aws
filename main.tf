@@ -8,7 +8,7 @@ provider "aws" {
 }
 
 module "s3backend" {
-  source         = "terraform-in-action/s3backend/aws"
+  source         = "git@github.com:rayl15/aws-tf-backend.git"
   principal_arns = [module.codepipeline.deployment_role_arn]
 }
 
